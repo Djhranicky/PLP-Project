@@ -173,6 +173,19 @@ argList
 
 // Expressions
 expr
+    : simpleExpr
+    | complexExpr
+    ;
+
+// Fast path for simple expressions
+simpleExpr
+    : identifier
+    | constantValue
+    | memberAccess
+    ;
+
+// Full path for complex expressions
+complexExpr
     : logicalOrExpr
     ;
 
@@ -205,8 +218,7 @@ unaryExpr
     ;
 
 primaryExpr
-    : memberAccess
-    | constantValue
+    : simpleExpr
     | LPAREN expr RPAREN
     ;
 
