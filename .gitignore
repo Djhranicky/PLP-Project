@@ -1,7 +1,5 @@
-Expr_test
 .antlr
-test
-*.interp
-*.tokens
-*.class
-*.java
+src/*.interp
+src/*.tokens
+src/*.class
+src/*.java
