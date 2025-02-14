@@ -3,3 +3,5 @@ src/*.interp
 src/*.tokens
 src/*.class
 src/*.java
+!src/DelphiInterpreter.java
+!src/Main.java
