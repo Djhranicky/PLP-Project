@@ -1,0 +1,6 @@
+PROGRAM BasicProgram;
+VAR
+    x: Integer;
+BEGIN
+    x := 42;
+END.
