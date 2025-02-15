@@ -1,7 +1,7 @@
+Expr_test
 .antlr
-src/*.interp
-src/*.tokens
-src/*.class
-src/*.java
-!src/DelphiInterpreter.java
-!src/Main.java
+test
+*.interp
+*.tokens
+*.class
+*.java
