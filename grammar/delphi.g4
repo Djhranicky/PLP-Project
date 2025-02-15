@@ -78,7 +78,7 @@ funcDecl
     : FUNCTION identifier (LPAREN paramList? RPAREN)? COLON typeIdentifier SEMI block? SEMI
     ;
 
-//Classes
+// Classes
 classDecl
     : CLASS identifier (EXTENDS identifier)?
       classBody
