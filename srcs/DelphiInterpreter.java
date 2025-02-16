@@ -1,7 +1,5 @@
 import java.util.*;
 
-import org.antlr.v4.runtime.tree.*;
-
 public class DelphiInterpreter extends delphiBaseListener {
     @Override
     public void enterProgramHeading(delphiParser.ProgramHeadingContext ctx) {

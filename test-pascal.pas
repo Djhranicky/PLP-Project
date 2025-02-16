@@ -27,7 +27,12 @@ CLASS Text
 
     CONSTRUCTOR Create;
     BEGIN
-        text := t;
+        text := System.ReadLn();
+    END;
+
+    DESTRUCTOR Destroy;
+    BEGIN
+        System.PrintLn(text);
     END;
 END;
 (*

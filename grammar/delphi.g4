@@ -130,6 +130,7 @@ methodImplementation
     : functionImplementation
     | procedureImplementation
     | constructorImplementation
+    | destructorImplementation
     ;
 
 functionImplementation
@@ -146,6 +147,12 @@ procedureImplementation
 
 constructorImplementation
     : CONSTRUCTOR identifier (LPAREN paramList? RPAREN)? SEMI
+      block
+      SEMI
+    ;
+
+destructorImplementation
+    : DESTRUCTOR identifier (LPAREN paramList? RPAREN)? SEMI
       block
       SEMI
     ;
