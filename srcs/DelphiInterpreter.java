@@ -1,6 +1,34 @@
 import java.util.*;
 
 public class DelphiInterpreter extends delphiBaseListener {
+    public static class Value {
+        public enum ValueType {INTEGER, REAL, STRING, NIL};
+
+        private ValueType type;
+        private int integerValue;
+        private double realValue;
+        private String stringValue;
+
+        public Value(int i) {
+            type = ValueType.INTEGER;
+            integerValue = i;
+        }
+        public Value(double r) {
+            type = ValueType.REAL;
+            realValue = r;
+        }
+        public Value(String s) {
+            type = ValueType.STRING;
+            stringValue = s;
+        }
+        public Value() {
+            type = ValueType.NIL;
+        }
+    }
+
+    private Map<String, Value> variables = new HashMap<>();
+
+
     @Override
     public void enterProgramHeading(delphiParser.ProgramHeadingContext ctx) {
         System.out.println("Running program: " + ctx.identifier().getText());
