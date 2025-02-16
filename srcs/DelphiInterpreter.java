@@ -19,10 +19,6 @@ public class DelphiInterpreter extends delphiBaseListener {
         List<delphiParser.MemberDeclContext> memberDeclList = ctx.memberList().memberDecl();
 
         for(delphiParser.MemberDeclContext memberDecl : memberDeclList ) {
-            delphiParser.MethodDeclContext methodDecl = null;
-            delphiParser.ConstructorDeclContext constructorDecl = null;
-            delphiParser.DestructorDeclContext destructorDecl = null;
-
             String className = memberDecl.getChild(0).getClass().getSimpleName();
             String type = "";
 
@@ -36,14 +32,18 @@ public class DelphiInterpreter extends delphiBaseListener {
                 case "ConstructorDeclContext":
                     String constructorId = memberDecl.constructorDecl().identifier().getText();
                     String paramString = "";
-                    List<delphiParser.ParamDeclContext> params = memberDecl.constructorDecl().paramList().paramDecl();
-                    for(delphiParser.ParamDeclContext param : params) {
-                        String ids = param.identifierList().getText().replaceAll(",", ", ");
-                        type = param.typeIdentifier().getText();
-                        paramString += ", " + ids + " of type " + type;
+                    delphiParser.ParamListContext paramList = memberDecl.constructorDecl().paramList();
+                    List<delphiParser.ParamDeclContext> params = null;
+                    if (paramList != null) {
+                        params = paramList.paramDecl();
+                        for(delphiParser.ParamDeclContext param : params) {
+                            String ids = param.identifierList().getText().replaceAll(",", ", ");
+                            type = param.typeIdentifier().getText();
+                            paramString += ", " + ids + " of type " + type;
+                        }
                     }
-                    paramString = paramString.substring(1);
-                    System.out.println("Declaring " + accessType.toLowerCase() + " constructor " + constructorId + " with parameters " + paramString);
+                    paramString = paramString.length() > 0 ? " with parameters " + paramString.substring(1) : "";
+                    System.out.println("Declaring " + accessType.toLowerCase() + " constructor " + constructorId +  paramString);
                     break;
                 case "MethodDeclContext":
                     String methodID = memberDecl.methodDecl().identifier().getText();
