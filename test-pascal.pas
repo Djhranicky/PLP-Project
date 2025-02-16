@@ -5,6 +5,7 @@ CLASS Rectangle
     PUBLIC
         CONSTRUCTOR Create(w, h: Real);
         FUNCTION GetArea: Real;
+        DESTRUCTOR Destroy;
 
     FUNCTION GetArea: Real;
     BEGIN

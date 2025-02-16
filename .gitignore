@@ -9,3 +9,4 @@ srcs/*.java
 *.interp
 *.tokens
 *.class
+*.png
