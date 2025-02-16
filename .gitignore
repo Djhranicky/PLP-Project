@@ -1,6 +1,11 @@
-Expr_test
 .antlr
 test
+srcs/*.interp
+srcs/*.tokens
+srcs/*.class
+srcs/*.java
+!srcs/DelphiInterpreter.java
+!srcs/Main.java
 *.interp
 *.tokens
 *.class
