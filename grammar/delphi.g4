@@ -1,4 +1,4 @@
-grammar delphi;
+grammar Delphi;
 options {
     caseInsensitive = true;
 }
@@ -33,12 +33,12 @@ declaration
     | IMPL SEMI
     ;
 
-// Labels
+// Label Declaration
 labelDeclPart
     : LABEL label (COMMA label)* SEMI
     ;
 
-// Constants
+// Constant Definition
 constDefPart
     : CONST (constDef SEMI)+
     ;
@@ -47,7 +47,7 @@ constDef
     : identifier EQUAL constantValue
     ;
 
-// Types
+// Type Definition
 typeDefPart
     : TYPE (typeDef SEMI)+
     ;
@@ -56,7 +56,7 @@ typeDef
     : identifier EQUAL typeIdentifier
     ;
 
-// Variables
+// Variable Declaration
 varDeclSection
     : VAR (varDecl SEMI)+
     ;
@@ -65,55 +65,52 @@ varDecl
     : identifierList COLON typeIdentifier
     ;
 
-// Procedures and Functions
+// Procedure and Function Declaration
 procFuncDeclPart
     : (procDecl | funcDecl)+
     ;
 
 procDecl
-    : PROCEDURE identifier (LPAREN paramList? RPAREN)? SEMI block? SEMI
+    : PROC identifier LPAREN paramList? RPAREN SEMI block? SEMI
     ;
 
 funcDecl
-    : FUNCTION identifier (LPAREN paramList? RPAREN)? COLON typeIdentifier SEMI block? SEMI
+    : FUNC identifier LPAREN paramList? RPAREN COLON typeIdentifier SEMI block? SEMI
     ;
 
-// Classes
+// Class Definition
 classDecl
     : CLASS identifier (EXTENDS identifier)?
-      classBody
+      classBlock
       END SEMI
     ;
 
-classBody
-    : memberSections?
-      methodImplementations?
+classBlock
+    : (accessSpecifier COLON classMember+)*
     ;
 
-memberSections
-    : memberSection+
-    ;
-
-memberSection
-    : accessSpecifier memberList
-    ;
-
-memberList
-    : (memberDecl SEMI)*
-    ;
-
-memberDecl
-    : varDecl
+classMember
+    : varDecl SEMI
     | methodDecl
-    | constructorDecl
-    | destructorDecl
+    | ctorDecl
+    | dtorDecl
+    ;
+
+// Constructor and Destructor
+ctorDecl
+    : CTOR identifier LPAREN paramList? RPAREN SEMI block SEMI
+    ;
+
+dtorDecl
+    : DTOR identifier SEMI block SEMI
     ;
 
 methodDecl
-    : FUNCTION identifier (LPAREN paramList? RPAREN)? COLON typeIdentifier
-    | PROCEDURE identifier (LPAREN paramList? RPAREN)?
+    : FUNC identifier LPAREN paramList? RPAREN COLON typeIdentifier SEMI block SEMI
+    | PROC identifier LPAREN paramList? RPAREN SEMI block SEMI
     ;
 
+<<<<<<< HEAD:grammar/delphi.g4
 constructorDecl
     : CONSTRUCTOR identifier (LPAREN paramList? RPAREN)?
     ;
@@ -150,27 +147,26 @@ constructorImplementation
       SEMI
     ;
 
+=======
+// Uses Units
+>>>>>>> parent of da51469 (Update Class Body structure):grammar/Delphi.g4
 usesUnitsPart
     : USES identifierList SEMI
     ;
 
 // Access Specifiers
 accessSpecifier
-    : PUBLIC
-    | PRIVATE
-    | PROTECTED
+    : PUB
+    | PRIV
+    | PROT
     ;
 
-// Parameters
+// Parameter List
 paramList
-    : paramDecl (SEMI paramDecl)*
+    : identifierList COLON typeIdentifier (SEMI identifierList COLON typeIdentifier)*
     ;
 
-paramDecl
-    : identifierList COLON typeIdentifier
-    ;
-
-// Compound Statement
+// Statements
 compoundStatement
     : BEGIN stmtList END
     ;
@@ -184,8 +180,8 @@ stmt
     | memberAccess
     | compoundStatement
     | ifStmt
-    | whileStmt
     | forStmt
+    | whileStmt
     | /* empty */
     ;
 
@@ -193,12 +189,12 @@ ifStmt
     : IF expr THEN stmt (ELSE stmt)?
     ;
 
-whileStmt
-    : WHILE expr DO stmt
-    ;
-
 forStmt
     : FOR identifier ASSIGN expr TO expr DO stmt
+    ;
+
+whileStmt
+    : WHILE expr DO stmt
     ;
 
 varAssign
@@ -220,12 +216,14 @@ expr
     | complexExpr
     ;
 
+// Fast path for simple expressions
 simpleExpr
     : identifier
     | constantValue
     | memberAccess
     ;
 
+// Full path for complex expressions
 complexExpr
     : logicalOrExpr
     ;
@@ -290,17 +288,17 @@ typeIdentifier
 // Lexer Rules
 PROGRAM     : 'PROGRAM';
 UNIT        : 'UNIT';
-INTF        : 'INTERFACE';
-IMPL        : 'IMPLEMENTATION';
+INTF        : 'INTF';
+IMPL        : 'IMPL';
 CLASS       : 'CLASS';
 EXTENDS     : 'EXTENDS';
-CONSTRUCTOR : 'CONSTRUCTOR';
-DESTRUCTOR  : 'DESTRUCTOR';
-PROCEDURE   : 'PROCEDURE';
-FUNCTION    : 'FUNCTION';
-PUBLIC      : 'PUBLIC';
-PRIVATE     : 'PRIVATE';
-PROTECTED   : 'PROTECTED';
+CTOR        : 'CONSTRUCTOR';
+DTOR        : 'DESTRUCTOR';
+PROC        : 'PROCEDURE';
+FUNC        : 'FUNCTION';
+PUB         : 'PUBLIC';
+PRIV        : 'PRIVATE';
+PROT        : 'PROTECTED';
 TYPE        : 'TYPE';
 CONST       : 'CONST';
 VAR         : 'VAR';
