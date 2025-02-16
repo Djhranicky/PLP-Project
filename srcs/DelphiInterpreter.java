@@ -1,31 +1,31 @@
-public class DelphiInterpreter extends DelphiBaseListener {
+public class DelphiInterpreter extends delphiBaseListener {
     @Override
-    public void enterProgramHeading(DelphiParser.ProgramHeadingContext ctx) {
+    public void enterProgramHeading(delphiParser.ProgramHeadingContext ctx) {
         System.out.println("Running program: " + ctx.identifier().getText());
     }
 
     @Override
-    public void enterClassDecl(DelphiParser.ClassDeclContext ctx) {
+    public void enterClassDecl(delphiParser.ClassDeclContext ctx) {
         System.out.println("Declaring class: " + ctx.identifier(0).getText());
     }
 
     @Override
-    public void enterProgram(DelphiParser.ProgramContext ctx) {
+    public void enterProgram(delphiParser.ProgramContext ctx) {
         // System.out.println("enterProgram: " + ctx.getText());
     }
 
     @Override
-    public void exitProgram(DelphiParser.ProgramContext ctx) {
+    public void exitProgram(delphiParser.ProgramContext ctx) {
         // System.out.println("exitProgram: " + ctx.getText());
     }
 
     @Override
-    public void enterIdentifierList(DelphiParser.IdentifierListContext ctx) {
+    public void enterIdentifierList(delphiParser.IdentifierListContext ctx) {
         // System.out.println("enterIdentifierList: " + ctx.getText());
     }
 
     @Override
-    public void enterIdentifier(DelphiParser.IdentifierContext ctx) {
+    public void enterIdentifier(delphiParser.IdentifierContext ctx) {
         // System.out.println("enterIdentifier: " + ctx.getText());
     }
 }

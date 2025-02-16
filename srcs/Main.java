@@ -7,9 +7,9 @@ public class Main {
     public static void main(String args[]) throws IOException {
         CharStream inputStream = CharStreams.fromFileName("test-pascal.pas");
 
-        DelphiLexer delphiLexer = new DelphiLexer(inputStream);
+        delphiLexer delphiLexer = new delphiLexer(inputStream);
         CommonTokenStream tokens = new CommonTokenStream(delphiLexer);
-        DelphiParser delphiParser = new DelphiParser(tokens);
+        delphiParser delphiParser = new delphiParser(tokens);
         ParseTree tree = delphiParser.program();
         DelphiInterpreter listener = new DelphiInterpreter();
         ParseTreeWalker.DEFAULT.walk(listener, tree);
