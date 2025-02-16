@@ -1,5 +1,5 @@
 echo off
 set arg1=%1
-antlr4 grammar/Delphi.g4 -o ./src
-javac src/Delphi*.java -d ./src
-java src/Main.java
+antlr4 delphi.g4
+javac delphi*.java
+grun.bat delphi program %arg1% -gui &
