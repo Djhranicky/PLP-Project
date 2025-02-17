@@ -170,7 +170,19 @@ public class DelphiInterpreter extends delphiBaseListener {
 
                 }
             }
+            if (isDotCall && firstId.equalsIgnoreCase("System") && ctx.identifier(1).getText().equalsIgnoreCase("PrintLn")) {
+                Value outValue = variables.get(ctx.argList().getText());
+                System.out.println(outValue.getString());
+            }
         }
+    }
+
+    @Override
+    public void exitVarAssign(delphiParser.VarAssignContext ctx) {
+        // varAssign: identifier ASSIGN expr
+        Value rhs = popValue();  // expression value
+        String varName = ctx.identifier().getText();
+        variables.put(varName, rhs);
     }
 
     @Override
