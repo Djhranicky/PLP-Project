@@ -34,6 +34,26 @@ public class DelphiInterpreter extends delphiBaseListener {
             }
             return 0;
         }
+
+        public String getString() {
+            switch(type) {
+                case INTEGER: return "" + integerValue;
+                case REAL: return "" + realValue;
+                case STRING: return stringValue;
+                case NIL: return "";
+            }
+            return "";
+        }
+
+        public double getReal() {
+            switch(type) {
+                case INTEGER: return (double) + integerValue;
+                case REAL: return realValue;
+                case STRING: throw new RuntimeException("Cannot convert STRING into Real");
+                case NIL: return 0.0;
+            }
+            return 0.0;
+        }
     }
 
     private Map<String, Value> variables = new HashMap<>();
