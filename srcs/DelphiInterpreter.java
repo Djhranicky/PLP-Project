@@ -24,9 +24,28 @@ public class DelphiInterpreter extends delphiBaseListener {
         public Value() {
             type = ValueType.NIL;
         }
+
+        public int getInt() {
+            switch(type) {
+                case INTEGER: return integerValue;
+                case REAL: return (int) integerValue;
+                case STRING: throw new RuntimeException("Cannot convert STRING into int");
+                case NIL: return 0;
+            }
+            return 0;
+        }
     }
 
     private Map<String, Value> variables = new HashMap<>();
+    private Deque<Value> valueStack = new ArrayDeque<>();
+
+    private void pushValue(Value v) {
+        valueStack.push(v);
+    }
+
+    private Value popValue() {
+        return valueStack.pop();
+    }
 
 
     @Override
@@ -83,6 +102,33 @@ public class DelphiInterpreter extends delphiBaseListener {
             }
         }
         // System.out.println("Declaring " + accessType.toLowerCase() + "");
+    }
+
+    @Override
+    public void exitSimpleExpr(delphiParser.SimpleExprContext ctx) {
+        if(ctx.identifier() != null) {
+            String name = ctx.identifier().getText();
+            Value val = variables.get(name);
+            if (val == null) {
+                // For uninitialized variables, default to nil?
+                val = new Value();
+            }
+            pushValue(val);
+        } else if (ctx.constantValue() != null) {
+            delphiParser.ConstantValueContext constCtx = ctx.constantValue();
+            if (constCtx.NUM_INT() != null) {
+                int i = Integer.parseInt(constCtx.NUM_INT().getText());
+                pushValue(new Value(i));
+            } else if (constCtx.NUM_REAL() != null) {
+                double d = Double.parseDouble(constCtx.NUM_REAL().getText());
+                pushValue(new Value(d));
+            } else if (constCtx.STRING() != null) {
+                String raw = constCtx.STRING().getText();
+                // Strip quotes
+                String s = raw.substring(1, raw.length() - 1);
+                pushValue(new Value(s));
+            }
+        }
     }
 
     @Override

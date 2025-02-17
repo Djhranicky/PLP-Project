@@ -46,11 +46,9 @@ END;
     | IMPL SEMI
 *)
 BEGIN
-    a := 123;
-    b := 123;
-    c := Rectangle.Create(3, 4);
-    d := Text.Create();
-    Text.Destroy;
+    a := 1;
+    d := System.ReadLn();
+    System.PrintLn(d);
 
     IF
         a = b
