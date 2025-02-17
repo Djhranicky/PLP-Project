@@ -1,4 +1,7 @@
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class DelphiInterpreter extends delphiBaseListener {
     public static class Value {
@@ -158,11 +161,14 @@ public class DelphiInterpreter extends delphiBaseListener {
             boolean isDotCall = (ctx.identifier().size() > 1);
 
             if (isDotCall && firstId.equalsIgnoreCase("System") && ctx.identifier(1).getText().equalsIgnoreCase("ReadLn")) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("Enter a string: ");
-                String inputString = scanner.nextLine();
-                scanner.close();
-                pushValue(new Value(inputString));
+                try {
+                    BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+                    System.out.println("Enter a string: ");
+                    String inputString = r.readLine();
+                    pushValue(new Value(inputString));
+                } catch(IOException ex) {
+
+                }
             }
         }
     }

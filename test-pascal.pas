@@ -18,6 +18,7 @@ CLASS Rectangle
         height := h;
     END;
 END;
+(*
 CLASS Text
     PRIVATE
         text: String;
@@ -35,6 +36,7 @@ CLASS Text
         System.PrintLn(text);
     END;
 END;
+*)
 (*
     Declarations:
     : labelDeclPart
