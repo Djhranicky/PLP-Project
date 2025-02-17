@@ -185,7 +185,6 @@ public class AST {
     }
     
     public static class EmptyStmtNode extends StmtNode {
-        // Represents empty statements allowed by the grammar
     }
     
     public static class UnitNode extends Node {
