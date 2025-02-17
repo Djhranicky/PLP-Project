@@ -152,6 +152,22 @@ public class DelphiInterpreter extends delphiBaseListener {
     }
 
     @Override
+    public void exitMemberAccess(delphiParser.MemberAccessContext ctx) {
+        if (ctx.LPAREN() != null && ctx.RPAREN() != null) {
+            String firstId = ctx.identifier(0).getText();
+            boolean isDotCall = (ctx.identifier().size() > 1);
+
+            if (isDotCall && firstId.equalsIgnoreCase("System") && ctx.identifier(1).getText().equalsIgnoreCase("ReadLn")) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Enter a string: ");
+                String inputString = scanner.nextLine();
+                scanner.close();
+                pushValue(new Value(inputString));
+            }
+        }
+    }
+
+    @Override
     public void enterProgram(delphiParser.ProgramContext ctx) {
         // System.out.println("enterProgram: " + ctx.getText());
     }
