@@ -51,4 +51,23 @@ BEGIN
     System.PrintLn(d);
     e := System.ReadLn();
     System.PrintLn(e);
+
+    rect := Rectangle.Create(1, 2);
+    area := rect.GetArea();
+    rect.Destroy;
+
+    IF a > b
+    THEN a := a - 1
+    ELSE a := a + 1;
+
+    triangle := 0;
+    WHILE b > 0
+    DO
+    BEGIN
+        triangle := triangle + b;
+        b := b - 1;
+    END;
+
+    FOR counter := 0 TO 5
+    DO counter := counter - 1;
 END.
