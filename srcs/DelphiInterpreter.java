@@ -205,17 +205,12 @@ public class DelphiInterpreter extends delphiBaseListener {
         List<delphiParser.MemberDeclContext> memberDeclList = ctx.memberList().memberDecl();
 
         for(delphiParser.MemberDeclContext memberDecl : memberDeclList ) {
-            String className = memberDecl.getChild(0).getClass().getSimpleName();
-            String type = "";
-
-            switch(className) {
-                case "VarDeclContext":
-                    // List<delphiParser.IdentifierContext> identifiers = memberDecl.varDecl().identifierList().getText();
+            if (memberDecl.varDecl() != null) {
                     String variables = memberDecl.varDecl().identifierList().getText().replaceAll(",", ", ");
-                    type = memberDecl.varDecl().typeIdentifier().getText();
+                String type = memberDecl.varDecl().typeIdentifier().getText();
                     System.out.println("Declaring " + accessType.toLowerCase() + " variable(s) \"" + variables + "\" of type " + type);
-                    break;
-                case "ConstructorDeclContext":
+            }
+            else if (memberDecl.constructorDecl() != null) {
                     String constructorId = memberDecl.constructorDecl().identifier().getText();
                     String paramString = "";
                     delphiParser.ParamListContext paramList = memberDecl.constructorDecl().paramList();
@@ -224,25 +219,23 @@ public class DelphiInterpreter extends delphiBaseListener {
                         params = paramList.paramDecl();
                         for(delphiParser.ParamDeclContext param : params) {
                             String ids = param.identifierList().getText().replaceAll(",", ", ");
-                            type = param.typeIdentifier().getText();
+                        String type = param.typeIdentifier().getText();
                             paramString += ", " + ids + " of type " + type;
                         }
                     }
                     paramString = paramString.length() > 0 ? " with parameters " + paramString.substring(1) : "";
                     System.out.println("Declaring " + accessType.toLowerCase() + " constructor " + constructorId +  paramString);
-                    break;
-                case "MethodDeclContext":
+            }
+            else if (memberDecl.methodDecl() != null) {
                     String methodID = memberDecl.methodDecl().identifier().getText();
-                    type = memberDecl.methodDecl().typeIdentifier().getText();
+                String type = memberDecl.methodDecl().typeIdentifier().getText();
                     System.out.println("Declaring " + accessType.toLowerCase() + " function " + methodID + " with return type " + type);
-                    break;
-                case "DestructorDeclContext":
+            }
+            else if (memberDecl.destructorDecl() != null) {
                     String destID = memberDecl.destructorDecl().identifier().getText();
                     System.out.println("Declaring " + accessType.toLowerCase() + " destructor " + destID);
-                    break;
             }
         }
-        // System.out.println("Declaring " + accessType.toLowerCase() + "");
     }
 
     @Override
