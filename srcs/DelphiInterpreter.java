@@ -88,8 +88,97 @@ public class DelphiInterpreter extends delphiBaseListener {
         }
     }
 
+    public static class DelphiIdentifier {
+        public enum AccessType {PUBLIC, PRIVATE, PROTECTED};
+        public enum IdentifierType {CONSTRUCTOR, DESTRUCTOR, FUNCTION, VARIABLE};
+
+        private AccessType access;
+        private IdentifierType identifier;
+        private String tokenName;
+
+        public DelphiIdentifier(AccessType a, IdentifierType i, String t) {
+            access = a;
+            identifier = i;
+            tokenName = t;
+        }
+
+        public String getAccess() {
+            switch(access) {
+                case PUBLIC: return "PUBLIC";
+                case PRIVATE: return "PRIVATE";
+                case PROTECTED: return "PROTECTED";
+            }
+            return "PUBLIC";
+        }
+
+        public String getIdentifierType() {
+            switch(identifier) {
+                case CONSTRUCTOR: return "CONSTRUCTOR";
+                case DESTRUCTOR: return "DESTRUCTOR";
+                case FUNCTION: return "FUNCTION";
+                case VARIABLE: return "VARIABLE";
+            }
+            return "CONSTRUCTOR";
+        }
+
+        public String getTokenName() {
+            return tokenName;
+        }
+    }
+
+    public static class DelphiClass {
+        private String className;
+        private DelphiIdentifier constructor;
+        private DelphiIdentifier destructor;
+        private List<DelphiIdentifier> functions;
+        private List<DelphiIdentifier> variables;
+
+        public DelphiClass(String c) {
+            className = c;
+        }
+
+        public void setConstructor(DelphiIdentifier c) {
+            if (c.getIdentifierType().equals("CONSTRUCTOR")) {
+                constructor = c;
+            } else {
+                throw new RuntimeException("DelphiClass constructor must be of identifier type CONSTRUCTOR");
+            }
+        }
+
+        public void setDestructor(DelphiIdentifier d) {
+            if (d.getIdentifierType().equals("DESTRUCTOR")) {
+                destructor = d;
+            } else {
+                throw new RuntimeException("DelphiClass destructor must be of identifier type DESTRUCTOR");
+            }
+        }
+
+        public void addFunction(DelphiIdentifier f) {
+            if (f.getIdentifierType().equals("FUNCTION")) {
+                if (functions == null) {
+                    functions = new ArrayList<DelphiIdentifier>();
+                }
+                functions.add(f);
+            } else {
+                throw new RuntimeException("DelphiClass function must be of identifier type FUNCTION");
+            }
+        }
+
+        public void addVariable(DelphiIdentifier v) {
+            if (v.getIdentifierType().equals("VARIABLE")) {
+                if (variables == null) {
+                    variables = new ArrayList<DelphiIdentifier>();
+                }
+                variables.add(v);
+            } else {
+                throw new RuntimeException("DelphiClass variable must be of identifier type VARIABLE");
+            }
+        }
+    }
+
     private Map<String, Value> variables = new HashMap<>();
     private Deque<Value> valueStack = new ArrayDeque<>();
+    private Map<String, List<String>> classes = new HashMap<>();
 
     private void pushValue(Value v) {
         valueStack.push(v);
