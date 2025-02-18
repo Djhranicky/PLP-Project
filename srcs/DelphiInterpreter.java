@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import org.antlr.v4.runtime.tree.*;;;
 
 public class DelphiInterpreter extends delphiBaseListener {
     public static class Value {
@@ -203,6 +204,28 @@ public class DelphiInterpreter extends delphiBaseListener {
                 System.out.println(outValue.getString());
             }
         }
+    }
+
+    @Override
+    public void exitAdditiveExpr(delphiParser.AdditiveExprContext ctx) {
+        int plusCount = ctx.PLUS().size();
+        int minusCount = ctx.MINUS().size();
+        int opCount = plusCount + minusCount;
+        if (opCount == 0) return; // no operation
+
+        List<ParseTree> children = ctx.children;
+        int numChildren = children.size();
+        Value sum = new Value();
+        for (int i = numChildren - 1; i >=2; i = i - 2) {
+            Value current = popValue();
+            if (children.get(i-1).getText().equals("+")){
+                sum = Value.add(sum, current);
+            } else {
+                sum = Value.sub(sum, current);
+            }
+        }
+        Value left = popValue();
+        pushValue(Value.add(left, sum));
     }
 
     @Override
