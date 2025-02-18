@@ -51,7 +51,7 @@ public class DelphiInterpreter extends delphiBaseListener {
 
         public double getReal() {
             switch(type) {
-                case INTEGER: return (double) + integerValue;
+                case INTEGER: return (double) integerValue;
                 case REAL: return realValue;
                 case STRING: throw new RuntimeException("Cannot convert STRING into Real");
                 case NIL: return 0.0;
@@ -84,7 +84,7 @@ public class DelphiInterpreter extends delphiBaseListener {
         }
 
         public static Value div(Value left, Value right) {
-            return new Value(left.getReal() / left.getReal());
+            return new Value(left.getReal() / right.getReal());
         }
     }
 
@@ -226,6 +226,29 @@ public class DelphiInterpreter extends delphiBaseListener {
         }
         Value left = popValue();
         pushValue(Value.add(left, sum));
+    }
+
+    @Override
+    public void exitMultiplicativeExpr(delphiParser.MultiplicativeExprContext ctx) {
+        // multiplicativeExpr: unaryExpr ((MULTIPLY | DIVIDE) unaryExpr)*
+        int mulCount = ctx.MULTIPLY().size();
+        int divCount = ctx.DIVIDE().size();
+        int opCount = mulCount + divCount;
+        if (opCount == 0) return;
+
+        List<ParseTree> children = ctx.children;
+        int numChildren = children.size();
+        Value sum = new Value(1);
+        for (int i = numChildren - 1; i >=2; i = i - 2) {
+            Value current = popValue();
+            if (children.get(i-1).getText().equals("*")){
+                sum = Value.mul(sum, current);
+            } else {
+                sum = Value.div(sum, current);
+            }
+        }
+        Value left = popValue();
+        pushValue(Value.mul(left, sum));
     }
 
     @Override
