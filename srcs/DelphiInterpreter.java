@@ -57,6 +57,34 @@ public class DelphiInterpreter extends delphiBaseListener {
             }
             return 0.0;
         }
+
+        public static Value add(Value left, Value right) {
+            if (left.type == ValueType.REAL || right.type == ValueType.REAL) {
+                return new Value(left.getReal() + right.getReal());
+            } else {
+                return new Value(left.getInt() + right.getInt());
+            }
+        }
+
+        public static Value sub(Value left, Value right) {
+            if (left.type == ValueType.REAL || right.type == ValueType.REAL) {
+                return new Value(left.getReal() - right.getReal());
+            } else {
+                return new Value(left.getInt() - right.getInt());
+            }
+        }
+
+        public static Value mul(Value left, Value right) {
+            if (left.type == ValueType.REAL || right.type == ValueType.REAL) {
+                return new Value(left.getReal() * right.getReal());
+            } else {
+                return new Value(left.getInt() * right.getInt());
+            }
+        }
+
+        public static Value div(Value left, Value right) {
+            return new Value(left.getReal() / left.getReal());
+        }
     }
 
     private Map<String, Value> variables = new HashMap<>();
