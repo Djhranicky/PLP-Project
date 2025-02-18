@@ -18,62 +18,37 @@ CLASS Rectangle
         height := h;
     END;
 END;
-(*
-CLASS Text
+CLASS Square
     PRIVATE
-        text: String;
+        side: Real;
     PUBLIC
-        CONSTRUCTOR Create();
-        DESTRUCTOR Destroy;
+        CONSTRUCTOR Create(s: Real);
+        FUNCTION GetArea: Real;
+        FUNCTION GetPerimeter: Real;
+        Destructor Destroy;
 
-    CONSTRUCTOR Create;
+    CONSTRUCTOR Create(s: Real);
     BEGIN
-        text := System.ReadLn();
+        side := s;
     END;
 
-    DESTRUCTOR Destroy;
+    FUNCTION GetArea: Real;
     BEGIN
-        System.PrintLn(text);
+        GetArea := side * side;
+    END;
+
+    FUNCTION GetPerimeter: Real;
+    BEGIN
+        GetPerimeter := side * 4;
     END;
 END;
-*)
-(*
-    Declarations:
-    : labelDeclPart
-    | constDefPart
-    | typeDefPart
-    | varDeclSection
-    | procFuncDeclPart
-    | usesUnitsPart
-    | IMPL SEMI
-*)
 BEGIN
-    a := 1;
-    d := System.ReadLn();
+    a := 10;
+    b := 5;
+    c := a + b - 1;
+    System.PrintLn(c);
+    d := a / b * 17;
     System.PrintLn(d);
-
-    IF
-        a = b
-    THEN
-        b := 124;
-
-    WHILE
-        a < b
-    DO
-        b := b - 1;
-
-    FOR counter := 0 TO 3
-    DO counter := counter + 1;
-
-(*
-    Compound Statements -> Statement List -> Statements:
-    : varAssign
-    | memberAccess
-    | compoundStatement
-    | ifStmt
-    | whileStmt
-    | forStmt
-    | /* empty */
-    ;
-*)
+    e := System.ReadLn();
+    System.PrintLn(e);
 END.
